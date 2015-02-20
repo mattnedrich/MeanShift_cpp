@@ -2,7 +2,7 @@
 #include "MeanShift.h"
 #include <math.h>
 
-#define MIN_DISTANCE 0.0000001
+#define EPSILON 0.0000001
 
 double euclidean_distance(vector<double> point_a, vector<double> point_b){
     double total = 0;
@@ -49,22 +49,19 @@ vector<double> MeanShift::shift_point(vector<double> point, vector<vector<double
 
 vector<vector<double> > MeanShift::cluster(vector<vector<double> > points, double kernel_bandwidth){
     vector<vector<double> > shifted_points = points;
-    double max_min_distance = 0;
-    int foo = 0;
+    double max_shift_distance;
     do {
-        max_min_distance = 0;
+        max_shift_distance = 0;
         for(int i=0; i<shifted_points.size(); i++){
             vector<double>point_new = shifted_points[i];
             point_new = shift_point(point_new, points, kernel_bandwidth);
             double shift_distance = euclidean_distance(point_new, shifted_points[i]);
-            printf("shift distance: %f\n", shift_distance);
-            if(shift_distance > max_min_distance){
-                max_min_distance = shift_distance;
+            // printf("shift distance: %f\n", shift_distance);
+            if(shift_distance > max_shift_distance){
+                max_shift_distance = shift_distance;
             }
             shifted_points[i] = point_new;
         }
-        foo++;
-    // } while (foo < 100);
-    } while (max_min_distance > MIN_DISTANCE);
+    } while (max_shift_distance > EPSILON);
     return shifted_points;
 }
