@@ -34,6 +34,7 @@ allPoints.push_back(point2);
 allPoints.push_back(point3);
 allPoints.push_back(point4);
 allPoints.push_back(point5);
-MeanShift *msp = new MeanShift(NULL);
-vector<vector<double> > shifted_points = msp->cluster(allPoints, .9);
+
+MeanShift *ms = new MeanShift(NULL);
+vector<vector<double> > shifted_points = ms->cluster(allPoints, .9);
 ```
