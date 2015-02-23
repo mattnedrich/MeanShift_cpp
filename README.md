@@ -13,28 +13,8 @@ To cluster a set of points, create a MeanShift object and call the `cluster` met
 
 ## Example
 ```cpp
-vector<vector<double> > allPoints;
-vector<double> point1;
-point1.push_back(0);
-point1.push_back(0);
-vector<double> point2;
-point2.push_back(1);
-point2.push_back(1);
-vector<double> point3;
-point3.push_back(0);
-point3.push_back(1);
-vector<double> point4;
-point4.push_back(.5);
-point4.push_back(.5);
-vector<double> point5;
-point5.push_back(1);
-point5.push_back(0);
-allPoints.push_back(point1);
-allPoints.push_back(point2);
-allPoints.push_back(point3);
-allPoints.push_back(point4);
-allPoints.push_back(point5);
-
+vector<vector<double> > points = load_points("test_simple.csv");
 MeanShift *ms = new MeanShift(NULL);
-vector<vector<double> > shifted_points = ms->cluster(allPoints, .9);
+double kernel_bandwidth = 2;
+vector<vector<double> > shifted_points = ms->cluster(points, 2);
 ```
