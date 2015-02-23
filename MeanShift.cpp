@@ -7,13 +7,13 @@
 double euclidean_distance(vector<double> point_a, vector<double> point_b){
     double total = 0;
     for(int i=0; i<point_a.size(); i++){
-        total = (point_a[i] - point_b[i]) * (point_a[i] - point_b[i]);
+        total += (point_a[i] - point_b[i]) * (point_a[i] - point_b[i]);
     }
     return sqrt(total);
 }
 
 double gaussian_kernel(double distance, double kernel_bandwidth){
-    double temp =  exp(-(distance*distance) / (kernel_bandwidth*kernel_bandwidth));
+    double temp =  exp(-(distance*distance) / (kernel_bandwidth));
     return temp;
 }
 
@@ -56,12 +56,12 @@ vector<vector<double> > MeanShift::cluster(vector<vector<double> > points, doubl
             vector<double>point_new = shifted_points[i];
             point_new = shift_point(point_new, points, kernel_bandwidth);
             double shift_distance = euclidean_distance(point_new, shifted_points[i]);
-            // printf("shift distance: %f\n", shift_distance);
             if(shift_distance > max_shift_distance){
                 max_shift_distance = shift_distance;
             }
             shifted_points[i] = point_new;
         }
+        printf("max_shift_distance: %f\n", max_shift_distance);
     } while (max_shift_distance > EPSILON);
     return shifted_points;
 }
