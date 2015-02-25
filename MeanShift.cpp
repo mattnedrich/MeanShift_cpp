@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "MeanShift.h"
 #include <math.h>
+#include "MeanShift.h"
 
 #define EPSILON 0.0000001
 
@@ -17,7 +17,7 @@ double gaussian_kernel(double distance, double kernel_bandwidth){
     return temp;
 }
 
-MeanShift::MeanShift( double (*_kernel_func)(double,double) ) {
+void MeanShift::set_kernel( double (*_kernel_func)(double,double) ) {
     if(!_kernel_func){
         kernel_func = gaussian_kernel;
     } else {

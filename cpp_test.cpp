@@ -1,37 +1,29 @@
 #include <stdio.h>
-#include "MeanShift.h"
-#include <vector>
-#include <string>
 #include <stdlib.h>
-#include <sstream>
+#include "MeanShift.h"
 
 using namespace std;
 
-vector<vector<double> > load_points(std::string filename) {
-    FILE * fp;
-    char * line = NULL;
-    size_t len = 0;
-    ssize_t read;
-    fp = fopen(filename.c_str(), "r");
+vector<vector<double> > load_points(const char *filename) {
     vector<vector<double> > points;
-    while ((read = getline(&line, &len, fp)) != -1) {
-        std::string str(line);
-        std::istringstream ss(str);
-        std::string token;
+    FILE *fp = fopen(filename, "r");
+    char line[50];
+    while (fgets(line, sizeof(line), fp) != NULL) {
         double x, y;
-        int i = 0;
-        while(std::getline(ss, token, ',')){
-            // printf("%s", token.c_str());
-            if(i % 2 == 0){
-                x = stod(token);
-            } else {
-                y = stod(token);
+        char *x_str = line;
+        char *y_str = line;
+        while (*y_str != '\0') {
+            if (*y_str == ',') {
+                *y_str++ = 0;
+                x = atof(x_str);
+                y = atof(y_str);
                 vector<double> point;
                 point.push_back(x);
                 point.push_back(y);
                 points.push_back(point);
+                break;
             }
-            i++;
+            ++y_str;
         }
     }
     fclose(fp);
@@ -49,10 +41,12 @@ void print_points(vector<vector<double> > points){
 
 int main(int argc, char **argv)
 {
-    vector<vector<double> > points = load_points("test.csv");
-    MeanShift *msp = new MeanShift(NULL);
+    MeanShift *msp = new MeanShift();
     double kernel_bandwidth = 3;
+
+    vector<vector<double> > points = load_points("test.csv");
     vector<vector<double> > shifted_points = msp->cluster(points, kernel_bandwidth);
+
     for(int i=0; i<shifted_points.size(); i++){
         for(int dim = 0; dim<shifted_points[i].size(); dim++) {
             printf("%f ", shifted_points[i][dim]);
