@@ -8,5 +8,5 @@ public:
     vector<vector<double> > cluster(vector<vector<double> >, double);
 private:
     double (*kernel_func)(double,double);
-    vector<double> shift_point(vector<double>, vector<vector<double> >, double);
+    vector<double> shift_point(const vector<double> &, const vector<vector<double> > &, double);
 };

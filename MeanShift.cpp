@@ -4,7 +4,7 @@
 
 #define EPSILON 0.0000001
 
-double euclidean_distance(vector<double> point_a, vector<double> point_b){
+double euclidean_distance(const vector<double> &point_a, const vector<double> &point_b){
     double total = 0;
     for(int i=0; i<point_a.size(); i++){
         total += (point_a[i] - point_b[i]) * (point_a[i] - point_b[i]);
@@ -25,7 +25,7 @@ MeanShift::MeanShift( double (*_kernel_func)(double,double) ) {
     }
 }
 
-vector<double> MeanShift::shift_point(vector<double> point, vector<vector<double> > points, double kernel_bandwidth) {
+vector<double> MeanShift::shift_point(const vector<double> &point, const vector<vector<double> > &points, double kernel_bandwidth) {
     vector<double> shifted_point = point;
     for(int dim = 0; dim<shifted_point.size(); dim++){
         shifted_point[dim] = 0;
@@ -48,18 +48,24 @@ vector<double> MeanShift::shift_point(vector<double> point, vector<vector<double
 }
 
 vector<vector<double> > MeanShift::cluster(vector<vector<double> > points, double kernel_bandwidth){
+    vector<bool> stop_moving;
+    stop_moving.reserve(points.size());
     vector<vector<double> > shifted_points = points;
     double max_shift_distance;
     do {
         max_shift_distance = 0;
         for(int i=0; i<shifted_points.size(); i++){
-            vector<double>point_new = shifted_points[i];
-            point_new = shift_point(point_new, points, kernel_bandwidth);
-            double shift_distance = euclidean_distance(point_new, shifted_points[i]);
-            if(shift_distance > max_shift_distance){
-                max_shift_distance = shift_distance;
+            if (!stop_moving[i]) {
+                vector<double>point_new = shift_point(shifted_points[i], points, kernel_bandwidth);
+                double shift_distance = euclidean_distance(point_new, shifted_points[i]);
+                if(shift_distance > max_shift_distance){
+                    max_shift_distance = shift_distance;
+                }
+                if(shift_distance <= EPSILON) {
+                    stop_moving[i] = true;
+                }
+                shifted_points[i] = point_new;
             }
-            shifted_points[i] = point_new;
         }
         printf("max_shift_distance: %f\n", max_shift_distance);
     } while (max_shift_distance > EPSILON);
