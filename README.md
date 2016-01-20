@@ -18,3 +18,23 @@ MeanShift *ms = new MeanShift(NULL);
 double kernel_bandwidth = 2;
 vector<vector<double> > shifted_points = ms->cluster(points, 2);
 ```
+
+## Visualization for Linux
+
+Install gnuplot and gnuplot-qt
+```bash
+sudo apt-get install gnuplot gnuplot-qt
+```
+
+Make and run the cpp_test
+```bash
+make
+./MeanShift
+```
+The program will generate a csv file named "result.csv".
+
+Plot it
+```bash
+gnuplot
+plot 'test.csv' with points, 'result.csv' with points
+```
