@@ -48,8 +48,7 @@ vector<double> MeanShift::shift_point(const vector<double> &point, const vector<
 }
 
 vector<vector<double> > MeanShift::cluster(vector<vector<double> > points, double kernel_bandwidth){
-    vector<bool> stop_moving;
-    stop_moving.reserve(points.size());
+    vector<bool> stop_moving(points.size(), false);
     vector<vector<double> > shifted_points = points;
     double max_shift_distance;
     do {
