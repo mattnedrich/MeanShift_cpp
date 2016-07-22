@@ -2,6 +2,8 @@
 #include <math.h>
 #include "MeanShift.h"
 
+using namespace std;
+
 #define EPSILON 0.0000001
 
 double euclidean_distance(const vector<double> &point_a, const vector<double> &point_b){
@@ -47,7 +49,7 @@ vector<double> MeanShift::shift_point(const vector<double> &point, const vector<
     return shifted_point;
 }
 
-vector<vector<double> > MeanShift::cluster(vector<vector<double> > points, double kernel_bandwidth){
+vector<vector<double> > MeanShift::cluster(const vector<vector<double> > & points, double kernel_bandwidth){
     vector<bool> stop_moving(points.size(), false);
     vector<vector<double> > shifted_points = points;
     double max_shift_distance;
