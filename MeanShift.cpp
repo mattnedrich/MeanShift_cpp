@@ -2,6 +2,8 @@
 #include <math.h>
 #include "MeanShift.h"
 
+using namespace std;
+
 #define EPSILON 0.0000001
 
 double euclidean_distance(const vector<double> &point_a, const vector<double> &point_b){
@@ -47,9 +49,8 @@ vector<double> MeanShift::shift_point(const vector<double> &point, const vector<
     return shifted_point;
 }
 
-vector<vector<double> > MeanShift::cluster(vector<vector<double> > points, double kernel_bandwidth){
-    vector<bool> stop_moving;
-    stop_moving.reserve(points.size());
+vector<vector<double> > MeanShift::meanshift(const vector<vector<double> > & points, double kernel_bandwidth){
+    vector<bool> stop_moving(points.size(), false);
     vector<vector<double> > shifted_points = points;
     double max_shift_distance;
     do {
@@ -70,4 +71,36 @@ vector<vector<double> > MeanShift::cluster(vector<vector<double> > points, doubl
         printf("max_shift_distance: %f\n", max_shift_distance);
     } while (max_shift_distance > EPSILON);
     return shifted_points;
+}
+
+vector<Cluster> MeanShift::cluster(
+    const vector<vector<double> > & points, 
+    const vector<vector<double> > & shifted_points)
+{
+    vector<Cluster> clusters;
+
+    for (int i = 0; i < shifted_points.size(); i++) {
+
+        int c = 0;
+        for (; c < clusters.size(); c++) {
+            if (euclidean_distance(shifted_points[i], clusters[c].mode) <= EPSILON) {
+                break;
+            }
+        }
+
+        if (c == clusters.size()) {
+            Cluster clus;
+            clus.mode = shifted_points[i];
+            clusters.push_back(clus);
+        }
+
+        clusters[c].support.push_back(points[i]);
+    }
+
+    return clusters;
+}
+
+vector<Cluster> MeanShift::cluster(const vector<vector<double> > & points, double kernel_bandwidth){
+    vector<vector<double> > shifted_points = meanshift(points, kernel_bandwidth);
+    return cluster(points, shifted_points);
 }
