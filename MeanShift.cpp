@@ -15,7 +15,7 @@ double euclidean_distance(const vector<double> &point_a, const vector<double> &p
 }
 
 double gaussian_kernel(double distance, double kernel_bandwidth){
-    double temp =  exp(-(distance*distance) / (kernel_bandwidth));
+    double temp =  exp(-1.0/2.0 * (distance*distance) / (kernel_bandwidth*kernel_bandwidth));
     return temp;
 }
 
