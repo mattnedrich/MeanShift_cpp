@@ -38,3 +38,6 @@ Plot it
 gnuplot
 plot 'test.csv' with points, 'result.csv' with points
 ```
+
+## License
+MIT License
