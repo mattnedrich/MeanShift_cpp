@@ -4,7 +4,8 @@
 
 struct Cluster {
     std::vector<double> mode;
-    std::vector<std::vector<double>> support;
+    std::vector<std::vector<double> > original_points;
+    std::vector<std::vector<double> > shifted_points;
 };
 
 class MeanShift {
