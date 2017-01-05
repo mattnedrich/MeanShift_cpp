@@ -45,21 +45,34 @@ int main(int argc, char **argv)
     double kernel_bandwidth = 3;
 
     vector<vector<double> > points = load_points("test.csv");
-    vector<vector<double> > shifted_points = msp->cluster(points, kernel_bandwidth);
+    vector<Cluster> clusters = msp->cluster(points, kernel_bandwidth);
 
     FILE *fp = fopen("result.csv", "w");
     if(!fp){
         perror("Couldn't write result.csv");
         exit(0);
     }
-    for(int i=0; i<shifted_points.size(); i++){
-        for(int dim = 0; dim<shifted_points[i].size(); dim++) {
-            printf("%f ", shifted_points[i][dim]);
-            fprintf(fp, dim?",%f":"%f", shifted_points[i][dim]);
+
+    printf("\n====================\n");
+    printf("Found %lu clusters\n", clusters.size());
+    printf("====================\n\n");
+    for(int cluster = 0; cluster < clusters.size(); cluster++) {
+      printf("Cluster %i:\n", cluster);
+      for(int point = 0; point < clusters[cluster].original_points.size(); point++){
+        for(int dim = 0; dim < clusters[cluster].original_points[point].size(); dim++) {
+          printf("%f ", clusters[cluster].original_points[point][dim]);
+          fprintf(fp, dim?",%f":"%f", clusters[cluster].original_points[point][dim]);
+        }
+        printf(" -> ");
+        for(int dim = 0; dim < clusters[cluster].shifted_points[point].size(); dim++) {
+          printf("%f ", clusters[cluster].shifted_points[point][dim]);
         }
         printf("\n");
         fprintf(fp, "\n");
+      }
+      printf("\n");
     }
     fclose(fp);
+
     return 0;
 }

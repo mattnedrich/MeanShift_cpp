@@ -4,7 +4,8 @@
 
 using namespace std;
 
-#define EPSILON 0.0000001
+#define EPSILON 0.00000001
+#define CLUSTER_EPSILON 0.5
 
 double euclidean_distance(const vector<double> &point_a, const vector<double> &point_b){
     double total = 0;
@@ -83,7 +84,7 @@ vector<Cluster> MeanShift::cluster(
 
         int c = 0;
         for (; c < clusters.size(); c++) {
-            if (euclidean_distance(shifted_points[i], clusters[c].mode) <= EPSILON) {
+            if (euclidean_distance(shifted_points[i], clusters[c].mode) <= CLUSTER_EPSILON) {
                 break;
             }
         }
@@ -94,7 +95,8 @@ vector<Cluster> MeanShift::cluster(
             clusters.push_back(clus);
         }
 
-        clusters[c].support.push_back(points[i]);
+        clusters[c].original_points.push_back(points[i]);
+        clusters[c].shifted_points.push_back(shifted_points[i]);
     }
 
     return clusters;
