@@ -36,7 +36,7 @@ The program will generate a csv file named "result.csv".
 Plot it
 ```bash
 gnuplot
-plot 'test.csv' with points, 'result.csv' with points
+plot 'test.csv' using 1:2 "%lf,%lf", 'result.csv' using 1:2 "%lf,%lf"
 ```
 
 ## License

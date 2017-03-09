@@ -61,11 +61,11 @@ int main(int argc, char **argv)
       for(int point = 0; point < clusters[cluster].original_points.size(); point++){
         for(int dim = 0; dim < clusters[cluster].original_points[point].size(); dim++) {
           printf("%f ", clusters[cluster].original_points[point][dim]);
-          fprintf(fp, dim?",%f":"%f", clusters[cluster].original_points[point][dim]);
         }
         printf(" -> ");
         for(int dim = 0; dim < clusters[cluster].shifted_points[point].size(); dim++) {
           printf("%f ", clusters[cluster].shifted_points[point][dim]);
+          fprintf(fp, dim?",%f":"%f", clusters[cluster].shifted_points[point][dim]);
         }
         printf("\n");
         fprintf(fp, "\n");
