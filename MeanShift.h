@@ -11,7 +11,7 @@ struct Cluster {
 class MeanShift {
 public:
     MeanShift() { set_kernel(NULL); }
-    MeanShift(double (*_kernel_func)(double,double)) { set_kernel(kernel_func); }
+    MeanShift(double (*_kernel_func)(double,double)) { set_kernel(_kernel_func); }
     std::vector<std::vector<double> > meanshift(const std::vector<std::vector<double> > &, double);
     std::vector<Cluster> cluster(const std::vector<std::vector<double> > &, double);
 
