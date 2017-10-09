@@ -67,12 +67,12 @@ std::vector<MeanShift::Point> MeanShift::meanshift(const std::vector<Point> &poi
                                              double EPSILON){
     const double EPSILON_SQR = EPSILON*EPSILON;
     vector<bool> stop_moving(points.size(), false);
-    vector<Point> shifted_points( points.size() );
+    vector<Point> shifted_points = points;
     double max_shift_distance;
     Point point_new;
     do {
         max_shift_distance = 0;
-        for(int i=0; i<shifted_points.size(); i++){
+        for(int i=0; i<points.size(); i++){
             if (!stop_moving[i]) {
                 shift_point(shifted_points[i], points, kernel_bandwidth, point_new);
                 double shift_distance_sqr = euclidean_distance_sqr(point_new, shifted_points[i]);
@@ -85,7 +85,7 @@ std::vector<MeanShift::Point> MeanShift::meanshift(const std::vector<Point> &poi
                 shifted_points[i] = point_new;
             }
         }
-        printf("max_shift_distance: %f\n", max_shift_distance);
+        printf("max_shift_distance squared: %f\n", max_shift_distance);
     } while (max_shift_distance > EPSILON_SQR);
     return shifted_points;
 }
