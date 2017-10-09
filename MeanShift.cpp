@@ -85,7 +85,7 @@ std::vector<MeanShift::Point> MeanShift::meanshift(const std::vector<Point> &poi
                 shifted_points[i] = point_new;
             }
         }
-        printf("max_shift_distance squared: %f\n", max_shift_distance);
+        printf("max_shift_distance: %f\n", sqrt(max_shift_distance));
     } while (max_shift_distance > EPSILON_SQR);
     return shifted_points;
 }
