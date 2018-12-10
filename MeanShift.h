@@ -13,7 +13,7 @@ public:
     typedef std::vector<double> Point;
 
     MeanShift() { set_kernel(NULL); }
-    MeanShift(double (*_kernel_func)(double,double)) { set_kernel(kernel_func); }
+    MeanShift(double (*_kernel_func)(double,double)) { set_kernel(_kernel_func); }
     std::vector<Point> meanshift(const std::vector<Point> & points,
                                                 double kernel_bandwidth,
                                                 double EPSILON = 0.00001);
